@@ -1,0 +1,58 @@
+# This file uses Universal Ctags extensions and may not be suitable
+# for Exuberant Ctags
+
+--langdef=Specman
+--langmap=Specman:.e
+
+--kinddef-Specman=c,class,struct and unit definition or extension
+--kinddef-Specman=d,define,preprocessor macro
+--kinddef-Specman=e,event,event declaration
+--kinddef-Specman=f,field,field declaration
+--kinddef-Specman=l,variable,local variable declaration
+--kinddef-Specman=m,method,method declaration
+--kinddef-Specman=n,enum,enum item declaration
+--kinddef-Specman=p,package,package declaration
+--kinddef-Specman=t,type,enumerated type declaration or extension
+--kinddef-Specman=x,check,concurrent (eXpect) or procedural check
+--kinddef-Specman=C,constraint,named constraint
+
+--_scopesep-Specman=p/c:::
+--_scopesep-Specman=*/*:.
+
+#--_tabledef-Specman=statement
+#--_tabledef-Specman=blockcomment
+#--_tabledef-Specman=linecomment
+#--_tabledef-Specman=typedef
+#--_tabledef-Specman=typemembers
+
+# Simplify things by assuming that statements start in the first
+# column
+#--_mtable-regex-Specman=statement/^(type|extend)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*:[[:space:]]*\[[[:space:]]*/\2/{tenter=typemembers}
+#--_mtable-regex-Specman=typemembers/[[:space:]]*([a-zA-Z0-9_]+)[^],]*/\1/
+#--_mtable-regex-Specman=typemembers/,[[:space:]]*//
+#--_mtable-regex-Specman=typemembers/\]//{tleave}
+
+--regex-Specman=/^(package)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*;/\2/p/{scope=push}
+--regex-Specman=/^(template[[:space:]]+)?(struct|unit|extend)(.*)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*(\{|$)/\4/c/{scope=push}
+--regex-Specman=/^\};///{placeholder}{scope=pop}
+
+--regex-Specman=/^(type|extend)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*[:;]/\2/t/
+--regex-Specman=/^#?define[[:space:]]+`?([a-zA-Z0-9_]+).*;/\1/d/
+
+# A bit of a hack: If the match string in a complex macro definition
+# starts with a literal identifier, it will be considered the "name"
+# of the macro. We can't do any better wthout a parser, sadly.
+--regex-Specman=/^define[[:space:]]+<[^>]+>[[:space:]]"(\((<[A-Z]+>)?[[:space:]]*)?([a-zA-Z0-9_]+)/\3/d/
+
+--regex-Specman=/^[[:space:]]*event[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]+/\1/e/
+--regex-Specman=/^[[:space:]]*(final[[:space:]]+)?([a-zA-Z0-9_]+)[[:space:]]*\(.*\)[[:space:]]*(:[[:space:]]*[a-zA-Z0-9_]+)?([[:space:]]+@[a-zA-Z0-9_]+)?is[[:space:]]*(first|also|only|undefined|empty)?[[:space:]]*(\{|$)/\2/m/{scope=ref}
+--regex-Specman=/^[[:space:]]*(static[[:space:]]+)?on[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*\{/on_\1/m/{scope=ref}
+--regex-Specman=/^[[:space:]]*((package|private)[[:space:]]+)?([%!][%!][[:space:]]+)?([a-zA-Z0-9_]+)[[:space:]]*(;|:[[:space:]]*[^ \t{])/\4/f/{scope=ref}
+--regex-Specman=/^[[:space:]]*var[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*:/\1/l/
+
+--regex-Specman=/^[[:space:]]*(expect|check)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*/\2/x/
+--regex-Specman=/^[[:space:]]*keep[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*is/\1/C/
+
+# Register model (vr_ad)
+--regex-Specman=/^[[:space:]]*reg_def[[:space:]]+([a-zA-Z0-9_]+)/\1/c/{scope=push}
+--regex-Specman=/^[[:space:]]*reg_fld[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*:/\1/f/{scope=ref}
