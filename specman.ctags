@@ -37,7 +37,7 @@
 --regex-Specman=/^\};///{placeholder}{scope=pop}
 
 --regex-Specman=/^(type|extend)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*[:;]/\2/t/
---regex-Specman=/^#?define[[:space:]]+`?([a-zA-Z0-9_]+).*;/\1/d/
+--regex-Specman=/^\#?define[[:space:]]+`?([a-zA-Z0-9_]+).*;/\1/d/
 
 # A bit of a hack: If the match string in a complex macro definition
 # starts with a literal identifier, it will be considered the "name"
