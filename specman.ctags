@@ -33,7 +33,7 @@
 #--_mtable-regex-Specman=typemembers/\]//{tleave}
 
 --regex-Specman=/^(package)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*;/\2/p/{scope=push}
---regex-Specman=/^(template[[:space:]]+)?(struct|unit|extend)(.*)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*(\{|$)/\4/c/{scope=push}
+--regex-Specman=/^(template[[:space:]]+)?(struct|unit|extend)(.*)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*(\{|of[[:space:]]|$)/\4/c/{scope=push}
 --regex-Specman=/^\};///{placeholder}{scope=pop}
 
 --regex-Specman=/^(type|extend)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*[:;]/\2/t/
