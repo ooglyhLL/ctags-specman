@@ -56,3 +56,12 @@
 # Register model (vr_ad)
 --regex-Specman=/^[[:space:]]*reg_def[[:space:]]+([a-zA-Z0-9_]+)/\1/c/{scope=push}
 --regex-Specman=/^[[:space:]]*reg_fld[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*:/\1/f/{scope=ref}
+
+# Sequences
+# Pragmatically create tags for default type/driver names even if
+# explicit names have been provided.
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*/\2/c/
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*/\2_kind/t/
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*/\2_driver/c/
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z0-9_]+).*[[:space:]]using[[:space:]].*created_kind=([a-zA-Z0-9_]+)/\3/t/
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z0-9_]+).*[[:space:]]using[[:space:]].*created_driver=([a-zA-Z0-9_]+)/\3/c/
