@@ -47,7 +47,7 @@
 --regex-Specman=/^[[:space:]]*event[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]+/\1/e/
 --regex-Specman=/^[[:space:]]*(final[[:space:]]+)?([a-zA-Z0-9_]+)[[:space:]]*\(.*\)[[:space:]]*(:[[:space:]]*[a-zA-Z0-9_]+)?([[:space:]]+@[a-zA-Z0-9_]+)?is[[:space:]]*(first|also|only|undefined|empty)?[[:space:]]*(\{|$)/\2/m/{scope=ref}
 --regex-Specman=/^[[:space:]]*(static[[:space:]]+)?on[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*\{/on_\2/m/{scope=ref}
---regex-Specman=/^[[:space:]]*((package|private)[[:space:]]+)?([%!][%!][[:space:]]+)?([a-zA-Z0-9_]+)[[:space:]]*(;|:[[:space:]]*[^ \t{])/\4/f/{scope=ref}
+--regex-Specman=/^[[:space:]]*((package|private)[[:space:]]+)?([%!]+[[:space:]]+)?([a-zA-Z0-9_]+)[[:space:]]*(;|:[[:space:]]*[^ \t{])/\4/f/{scope=ref}
 --regex-Specman=/^[[:space:]]*var[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*:/\1/l/
 
 --regex-Specman=/^[[:space:]]*(expect|check)[[:space:]]+([a-zA-Z0-9_]+)[[:space:]]*/\2/x/
