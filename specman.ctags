@@ -27,42 +27,42 @@
 
 # Simplify things by assuming that statements start in the first
 # column
-#--_mtable-regex-Specman=statement/^(type|extend)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:[[:space:]]*\[[[:space:]]*/\2/{tenter=typemembers}
-#--_mtable-regex-Specman=typemembers/[[:space:]]*([a-zA-Z][a-zA-Z0-9_]*)[^],]*/\1/
-#--_mtable-regex-Specman=typemembers/,[[:space:]]*//
-#--_mtable-regex-Specman=typemembers/\]//{tleave}
+#--_mtable-regex-Specman=statement/^(type|extend)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:[[:space:]]*\[[[:space:]]*/\2/{tenter=typemembers}{pcre2}
+#--_mtable-regex-Specman=typemembers/[[:space:]]*([a-zA-Z][a-zA-Z0-9_]*)[^],]*/\1/{pcre2}
+#--_mtable-regex-Specman=typemembers/,[[:space:]]*//{pcre2}
+#--_mtable-regex-Specman=typemembers/\]//{tleave}{pcre2}
 
---regex-Specman=/^(package)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*;/\2/p/{scope=push}
+--regex-Specman=/^(package)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*;/\2/p/{scope=push}{pcre2}
 --regex-Specman=/^(struct|unit|extend).*?[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*(\{|of[[:space:]]|like[[:space:]]|$)/\2/c/{scope=push}{pcre2}
 --regex-Specman=/^(package[[:space:]]+)?template[[:space:]]+(struct|unit|extend|interface|numeric_type)[[:space:]]+.*?([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*of[[:space:]]*(\([[:space:]]*)?</\3/c/{scope=push}{pcre2}
---regex-Specman=/^\};///{placeholder}{scope=pop}
+--regex-Specman=/^\};///{placeholder}{scope=pop}{pcre2}
 
---regex-Specman=/^(type|extend)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*[:;]/\2/t/
---regex-Specman=/^\#?define[[:space:]]+`?([a-zA-Z][a-zA-Z0-9_]*).*;/\1/d/
+--regex-Specman=/^(type|extend)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*[:;]/\2/t/{pcre2}
+--regex-Specman=/^\#?define[[:space:]]+`?([a-zA-Z][a-zA-Z0-9_]*).*;/\1/d/{pcre2}
 
 # A bit of a hack: If the match string in a complex macro definition
 # starts with a literal identifier, it will be considered the "name"
 # of the macro. We can't do any better wthout a parser, sadly.
---regex-Specman=/^define[[:space:]]+<[^>]+>[[:space:]]"(\((<[A-Z]+>)?[[:space:]]*)?([a-zA-Z][a-zA-Z0-9_]*)/\3/d/
+--regex-Specman=/^define[[:space:]]+<[^>]+>[[:space:]]"(\((<[A-Z]+>)?[[:space:]]*)?([a-zA-Z][a-zA-Z0-9_]*)/\3/d/{pcre2}
 
---regex-Specman=/^[[:space:]]*event[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]+/\1/e/
---regex-Specman=/^[[:space:]]*(final[[:space:]]+)?([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*\(.*\)[[:space:]]*(:[[:space:]]*[a-zA-Z][a-zA-Z0-9_]*)?([[:space:]]+@[a-zA-Z][a-zA-Z0-9_]*)?is[[:space:]]*(first|also|only|undefined|empty)?[[:space:]]*(\{|$)/\2/m/{scope=ref}
---regex-Specman=/^[[:space:]]*(static[[:space:]]+)?on[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*\{/on_\2/m/{scope=ref}
---regex-Specman=/^[[:space:]]+((package|private)[[:space:]]+)?([%!]+[[:space:]]*)?([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*(;|:[[:space:]]*[^ \t{])/\4/f/{scope=ref}
---regex-Specman=/^[[:space:]]*var[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:/\1/l/
+--regex-Specman=/^[[:space:]]*event[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]+/\1/e/{pcre2}
+--regex-Specman=/^[[:space:]]*(final[[:space:]]+)?([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*\(.*\)[[:space:]]*(:[[:space:]]*[a-zA-Z][a-zA-Z0-9_]*)?([[:space:]]+@[a-zA-Z][a-zA-Z0-9_]*)?is[[:space:]]*(first|also|only|undefined|empty)?[[:space:]]*(\{|$)/\2/m/{scope=ref}{pcre2}
+--regex-Specman=/^[[:space:]]*(static[[:space:]]+)?on[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*\{/on_\2/m/{scope=ref}{pcre2}
+--regex-Specman=/^[[:space:]]+((package|private)[[:space:]]+)?([%!]+[[:space:]]*)?([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*(;|:[[:space:]]*[^ \t{])/\4/f/{scope=ref}{pcre2}
+--regex-Specman=/^[[:space:]]*var[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:/\1/l/{pcre2}
 
---regex-Specman=/^[[:space:]]*(expect|check)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2/x/
---regex-Specman=/^[[:space:]]*keep[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*is/\1/C/
+--regex-Specman=/^[[:space:]]*(expect|check)[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2/x/{pcre2}
+--regex-Specman=/^[[:space:]]*keep[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*is/\1/C/{pcre2}
 
 # Register model (vr_ad)
---regex-Specman=/^[[:space:]]*reg_def[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)/\1/c/{scope=push}
---regex-Specman=/^[[:space:]]*reg_fld[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:/\1/f/{scope=ref}
+--regex-Specman=/^[[:space:]]*reg_def[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)/\1/c/{scope=push}{pcre2}
+--regex-Specman=/^[[:space:]]*reg_fld[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*:/\1/f/{scope=ref}{pcre2}
 
 # Sequences
 # Pragmatically create tags for default type/driver names even if
 # explicit names have been provided.
---regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2/c/
---regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2_kind/t/
---regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2_driver/c/
---regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*).*[[:space:]]using[[:space:]].*created_kind=([a-zA-Z][a-zA-Z0-9_]*)/\3/t/
---regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*).*[[:space:]]using[[:space:]].*created_driver=([a-zA-Z][a-zA-Z0-9_]*)/\3/c/
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2/c/{pcre2}
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2_kind/t/{pcre2}
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*/\2_driver/c/{pcre2}
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*).*[[:space:]]using[[:space:]].*created_kind=([a-zA-Z][a-zA-Z0-9_]*)/\3/t/{pcre2}
+--regex-Specman=/^[[:space:]]*(template[[:space:]]+)?sequence[[:space:]]+([a-zA-Z][a-zA-Z0-9_]*).*[[:space:]]using[[:space:]].*created_driver=([a-zA-Z][a-zA-Z0-9_]*)/\3/c/{pcre2}
